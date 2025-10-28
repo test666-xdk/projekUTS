@@ -7,14 +7,14 @@ class MasterData extends Database {
 
     // Method untuk mendapatkan daftar program studi
     public function getProdi(){
-        $query = "SELECT * FROM tb_produk";
+        $query = "SELECT * FROM tb_kategori";
         $result = $this->conn->query($query);
         $prodi = [];
         if ($result->num_rows > 0) {
             while($row = $result->fetch_assoc()) {
                 $prodi[] = [
                     'id' => $row['kode_produk'],
-                    'nama' => $row['nama_produk']
+                    'nama produk' => $row['nama_produk']
                 ];
             }
         }
@@ -30,7 +30,7 @@ class MasterData extends Database {
             while($row = $result->fetch_assoc()) {
                 $provinsi[] = [
                     'nama' => $row['nama_produk'],
-                    'harga' => $row['harga_jual']
+                    'harga produk' => $row['harga_jual']
                 ];
             }
         }
@@ -88,12 +88,12 @@ class MasterData extends Database {
     public function updateProdi($data){
         $kodeProdi = $data['kode'];
         $namaProdi = $data['nama'];
-        $query = "UPDATE tb_prodi SET nama_prodi = ? WHERE kode_prodi = ?";
+        $query = "UPDATE tb_kategori SET nama_produk = ? WHERE kode_produk = ?";
         $stmt = $this->conn->prepare($query);
         if(!$stmt){
             return false;
         }
-        $stmt->bind_param("ss", $namaProdi, $kodeProdi);
+        $stmt->bind_param("ss", $namaProduk, $kodeProduk);
         $result = $stmt->execute();
         $stmt->close();
         return $result;
