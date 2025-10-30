@@ -1,21 +1,21 @@
 <?php
 
-include_once 'config/class-mahasiswa.php';
-$mahasiswa = new Mahasiswa();
+include_once 'config/class-Produk.php';
+$produk = new Produk();
 // Menampilkan alert berdasarkan status yang diterima melalui parameter GET
 if(isset($_GET['status'])){
 	// Mengecek nilai parameter GET 'status' dan menampilkan alert yang sesuai menggunakan JavaScript
 	if($_GET['status'] == 'inputsuccess'){
-		echo "<script>alert('Data mahasiswa berhasil ditambahkan.');</script>";
+		echo "<script>alert('Data Produk berhasil ditambahkan.');</script>";
 	} else if($_GET['status'] == 'editsuccess'){
-		echo "<script>alert('Data mahasiswa berhasil diubah.');</script>";
+		echo "<script>alert('Data Produk berhasil diubah.');</script>";
 	} else if($_GET['status'] == 'deletesuccess'){
-		echo "<script>alert('Data mahasiswa berhasil dihapus.');</script>";
+		echo "<script>alert('Data Produk berhasil dihapus.');</script>";
 	} else if($_GET['status'] == 'deletefailed'){
-		echo "<script>alert('Gagal menghapus data mahasiswa. Silakan coba lagi.');</script>";
+		echo "<script>alert('Gagal menghapus data Produk. Silakan coba lagi.');</script>";
 	}
 }
-$dataMahasiswa = $mahasiswa->getAllMahasiswa();
+$dataProduk = $produk->getAllProduk();
 
 ?>
 <!doctype html>
@@ -38,7 +38,7 @@ $dataMahasiswa = $mahasiswa->getAllMahasiswa();
 					<div class="container-fluid">
 						<div class="row">
 							<div class="col-sm-6">
-								<h3 class="mb-0">Daftar Mahasiswa</h3>
+								<h3 class="mb-0">Daftar Produk</h3>
 							</div>
 							<div class="col-sm-6">
 								<ol class="breadcrumb float-sm-end">
@@ -56,7 +56,7 @@ $dataMahasiswa = $mahasiswa->getAllMahasiswa();
 							<div class="col-12">
 								<div class="card">
 									<div class="card-header">
-										<h3 class="card-title">Tabel Mahasiswa</h3>
+										<h3 class="card-title">Tabel Produk</h3>
 										<div class="card-tools">
 											<button type="button" class="btn btn-tool" data-lte-toggle="card-collapse" title="Collapse">
 												<i data-lte-icon="expand" class="bi bi-plus-lg"></i>
@@ -71,45 +71,56 @@ $dataMahasiswa = $mahasiswa->getAllMahasiswa();
 										<table class="table table-striped" role="table">
 											<thead>
 												<tr>
-													<th>No</th>
-													<th>NIM</th>
-													<th>Nama</th>
-													<th>Prodi</th>
-													<th>Provinsi</th>
-													<th>Alamat</th>
-													<th>Telp</th>
-													<th>Email</th>
+													<th>NAMA PRODUK</th>
+													<th>Material</th>
+													<th>Dimensi</th>
+													<th>Harga</th>
+													<th>Deskripsi</th>
 													<th class="text-center">Status</th>
 													<th class="text-center">Aksi</th>
 												</tr>
 											</thead>
 											<tbody>
 												<?php
-													if(count($dataMahasiswa) == 0){
-													    echo '<tr class="align-middle">
-															<td colspan="10" class="text-center">Tidak ada data mahasiswa.</td>
+													if(count($dataPelanggan == 0){
+												        echo '<table class="table">';
+                                                        echo '<tbody>';
+                                                        echo '<tr class="align-middle">';
+                                                        echo '<td>Nama Produk</td>';
+                                                        echo '<td>Material</td>';
+														echo '<td>Dimensi</td>';
+														echo '<td>Harga</td>';
+														echo '<td>Deskripsi</td>';
+                                                        echo '</tr>';
+                                                        echo '<tr>';
+                                                        echo '<td>Meja Kayu</td>';
+                                                        echo '<td>Kayu Jati</td>';
+                                                        echo '<td>120x60x75 cm</td>';
+                                                        echo '<td>Rp 1.500.000</td>';
+                                                        echo '<td>Meja makan minimalis</td>';
+                                                        echo '</tr>';
+                                                        echo '</tbody>';
+                                                        echo '</table>';
+
+														<td colspan="10" class="text-center">tidak ada data pelanggan.</td>
 														</tr>';
 													} else {
-														foreach ($dataMahasiswa as $index => $mahasiswa){
-															if($mahasiswa['status'] == 1){
-															    $mahasiswa['status'] = '<span class="badge bg-success">Aktif</span>';
-															} elseif($mahasiswa['status'] == 2){
-															    $mahasiswa['status'] = '<span class="badge bg-danger">Tidak Aktif</span>';
-															} elseif($mahasiswa['status'] == 3){
-															    $mahasiswa['status'] = '<span class="badge bg-warning text-dark">Cuti</span>';
-															} elseif($mahasiswa['status'] == 4){
-															    $mahasiswa['status'] = '<span class="badge bg-primary">Lulus</span>';
+														foreach ($dataPelanggan as $index => $Pelanggan){
+															if($pelanggan['status'] == 1){
+															    $pelanggan['status'] = '<span class="badge bg-success">Aktif</span>';
+															} elseif($pelanggan['status'] == 2){
+															    $pelanggan['status'] = '<span class="badge bg-danger">Tidak Aktif</span>';
+															} elseif($pealnggan['status'] == 3){
+															    $pelanggan['status'] = '<span class="badge bg-warning text-dark">Cuti</span>';
+															} elseif($pelanggan['status'] == 4){
+															    $pelanggan['status'] = '<span class="badge bg-primary">Lulus</span>';
 															} 
 															echo '<tr class="align-middle">
 																<td>'.($index + 1).'</td>
-																<td>'.$mahasiswa['nim'].'</td>
-																<td>'.$mahasiswa['nama'].'</td>
-																<td>'.$mahasiswa['prodi'].'</td>
-																<td>'.$mahasiswa['provinsi'].'</td>
-																<td>'.$mahasiswa['alamat'].'</td>
-																<td>'.$mahasiswa['telp'].'</td>
-																<td>'.$mahasiswa['email'].'</td>
-																<td class="text-center">'.$mahasiswa['status'].'</td>
+																<td>'.$pelanggan['nama'].'</td>
+																<td>'.$pelanggan['no hp'].'</td>
+																<td>'.$pelanggan['alamat'].'</td>
+																<td class="text-center">'.$pelanggan['status'].'</td>
 																<td class="text-center">
 																	<button type="button" class="btn btn-sm btn-warning me-1" onclick="window.location.href=\'data-edit.php?id='.$mahasiswa['id'].'\'"><i class="bi bi-pencil-fill"></i> Edit</button>
 																	<button type="button" class="btn btn-sm btn-danger" onclick="if(confirm(\'Yakin ingin menghapus data mahasiswa ini?\')){window.location.href=\'proses/proses-delete.php?id='.$mahasiswa['id'].'\'}"><i class="bi bi-trash-fill"></i> Hapus</button>

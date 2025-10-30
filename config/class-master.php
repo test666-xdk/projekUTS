@@ -6,30 +6,30 @@ include_once 'db-config.php';
 class MasterData extends Database {
 
     // Method untuk mendapatkan daftar program studi
-    public function getProdi(){
+    public function getkategori(){
         $query = "SELECT * FROM tb_kategori";
         $result = $this->conn->query($query);
-        $prodi = [];
+        $kategori = [];
         if ($result->num_rows > 0) {
             while($row = $result->fetch_assoc()) {
                 $prodi[] = [
-                    'id' => $row['kode_produk'],
-                    'nama produk' => $row['nama_produk']
+                    'id' => $row['id_kategori'],
+                    'nama kategori' => $row['nama_kategori']
                 ];
             }
         }
-        return $prodi;
+        return $kategori;
     }
 
     // Method untuk mendapatkan daftar provinsi
     public function getProvinsi(){
-        $query = "SELECT * FROM tb_provinsi";
+        $query = "SELECT * FROM tb_kategori";
         $result = $this->conn->query($query);
         $provinsi = [];
         if ($result->num_rows > 0) {
             while($row = $result->fetch_assoc()) {
                 $provinsi[] = [
-                    'nama' => $row['nama_produk'],
+                    'nama' => $row['nama_kategori'],
                     'harga produk' => $row['harga_jual']
                 ];
             }
@@ -49,9 +49,9 @@ class MasterData extends Database {
 
     // Method untuk input data program studi
     public function inputProdi($data){
-        $kodeProdi = $data['kode'];
-        $namaProdi = $data['nama'];
-        $query = "INSERT INTO tb_prodi (kode_prodi, nama_prodi) VALUES (?, ?)";
+        $kodekategori = $data['kode'];
+        $namakategori = $data['nama'];
+        $query = "INSERT INTO tb_ (kode_prodi, nama_prodi) VALUES (?, ?)";
         $stmt = $this->conn->prepare($query);
         if(!$stmt){
             return false;
@@ -85,10 +85,10 @@ class MasterData extends Database {
     }
 
     // Method untuk mengedit data program studi
-    public function updateProdi($data){
-        $kodeProdi = $data['kode'];
-        $namaProdi = $data['nama'];
-        $query = "UPDATE tb_kategori SET nama_produk = ? WHERE kode_produk = ?";
+    public function updateKategori($data){
+        $idKategori = $data['kode'];
+        $namaKategori = $data['nama'];
+        $query = "UPDATE tb_kategori SET nama_produk = ? WHERE id_produk = ?";
         $stmt = $this->conn->prepare($query);
         if(!$stmt){
             return false;
