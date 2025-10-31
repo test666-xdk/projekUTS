@@ -1,7 +1,7 @@
 <?php
 
-include_once 'config/class-Produk.php';
-$produk = new Produk();
+include_once 'config/class-Kategori.php';
+$kategori = new Kategori();
 // Menampilkan alert berdasarkan status yang diterima melalui parameter GET
 if(isset($_GET['status'])){
 	// Mengecek nilai parameter GET 'status' dan menampilkan alert yang sesuai menggunakan JavaScript
@@ -15,7 +15,7 @@ if(isset($_GET['status'])){
 		echo "<script>alert('Gagal menghapus data Produk. Silakan coba lagi.');</script>";
 	}
 }
-$dataProduk = $produk->getAllProduk();
+$dataKategori = $kategori->getAllKategori();
 
 ?>
 <!doctype html>
@@ -71,59 +71,52 @@ $dataProduk = $produk->getAllProduk();
 										<table class="table table-striped" role="table">
 											<thead>
 												<tr>
-													<th>NAMA PRODUK</th>
-													<th>Material</th>
-													<th>Dimensi</th>
-													<th>Harga</th>
+													<th>nama kategori</th>
 													<th>Deskripsi</th>
-													<th class="text-center">Status</th>
-													<th class="text-center">Aksi</th>
 												</tr>
 											</thead>
 											<tbody>
 												<?php
-													if(count($dataPelanggan == 0){
-												        echo '<table class="table">';
-                                                        echo '<tbody>';
-                                                        echo '<tr class="align-middle">';
-                                                        echo '<td>Nama Produk</td>';
-                                                        echo '<td>Material</td>';
-														echo '<td>Dimensi</td>';
-														echo '<td>Harga</td>';
-														echo '<td>Deskripsi</td>';
-                                                        echo '</tr>';
-                                                        echo '<tr>';
-                                                        echo '<td>Meja Kayu</td>';
-                                                        echo '<td>Kayu Jati</td>';
-                                                        echo '<td>120x60x75 cm</td>';
-                                                        echo '<td>Rp 1.500.000</td>';
-                                                        echo '<td>Meja makan minimalis</td>';
-                                                        echo '</tr>';
-                                                        echo '</tbody>';
-                                                        echo '</table>';
+													if(count($datakategori == 0){
+												   $koneksi = new mysql("localhost", "root", "", "db_simplecrud");
+                                                   $query = "SELECT * FROM kategori";
+                                                   $result = $koneksi->query($query);
+                                                      ?>
 
-														<td colspan="10" class="text-center">tidak ada data pelanggan.</td>
-														</tr>';
+                                                   <table border="1" width="100%">
+                                                   <tr>
+                                                   <th>Nama Kategori</th>
+												   <th>Deskripsi</th>
+                                                </tr>
+
+                                               <?php
+                                              if ($result->num_rows > 0) {
+                                                $no = 1;
+                                             while ($row = $result->fetch_assoc()) {
+                                             echo "<tr>";
+                                             echo "<td>" . $no++ . "</td>";
+                                             echo "<td>" . $row['nama_kategori'] . "</td>";
+                                             echo "</tr>";
+                                            }
+                                          } else {
+                                      echo "<tr><td colspan='2' class='text-center'>Tidak ada data kategori.</td></tr>";
+                                         }
+                                            ?>
+                                       </table>
 													} else {
 														foreach ($dataPelanggan as $index => $Pelanggan){
 															if($pelanggan['status'] == 1){
-															    $pelanggan['status'] = '<span class="badge bg-success">Aktif</span>';
+															    $pelanggan['status'] = '<span class="badge bg-success">tersedia</span>';
 															} elseif($pelanggan['status'] == 2){
-															    $pelanggan['status'] = '<span class="badge bg-danger">Tidak Aktif</span>';
-															} elseif($pealnggan['status'] == 3){
-															    $pelanggan['status'] = '<span class="badge bg-warning text-dark">Cuti</span>';
-															} elseif($pelanggan['status'] == 4){
-															    $pelanggan['status'] = '<span class="badge bg-primary">Lulus</span>';
+															    $pelanggan['status'] = '<span class="badge bg-danger">Tidak tersedia</span>';
 															} 
 															echo '<tr class="align-middle">
 																<td>'.($index + 1).'</td>
-																<td>'.$pelanggan['nama'].'</td>
-																<td>'.$pelanggan['no hp'].'</td>
-																<td>'.$pelanggan['alamat'].'</td>
-																<td class="text-center">'.$pelanggan['status'].'</td>
+																<td>'.$nama['nama'].'</td>
+																<td>'.$deskripsi['deskripsi'].'</td>
 																<td class="text-center">
-																	<button type="button" class="btn btn-sm btn-warning me-1" onclick="window.location.href=\'data-edit.php?id='.$mahasiswa['id'].'\'"><i class="bi bi-pencil-fill"></i> Edit</button>
-																	<button type="button" class="btn btn-sm btn-danger" onclick="if(confirm(\'Yakin ingin menghapus data mahasiswa ini?\')){window.location.href=\'proses/proses-delete.php?id='.$mahasiswa['id'].'\'}"><i class="bi bi-trash-fill"></i> Hapus</button>
+																	<button type="button" class="btn btn-sm btn-warning me-1" onclick="window.location.href=\'data-edit.php?id='.$kategori['id'].'\'"><i class="bi bi-pencil-fill"></i> Edit</button>
+																	<button type="button" class="btn btn-sm btn-danger" onclick="if(confirm(\'Yakin ingin menghapus data kategori ini?\')){window.location.href=\'proses/proses-delete.php?id='.$kategori['id'].'\'}"><i class="bi bi-trash-fill"></i> Hapus</button>
 																</td>
 															</tr>';
 														}
@@ -133,7 +126,7 @@ $dataProduk = $produk->getAllProduk();
 										</table>
 									</div>
 									<div class="card-footer">
-										<button type="button" class="btn btn-primary" onclick="window.location.href='data-input.php'"><i class="bi bi-plus-lg"></i> Tambah Mahasiswa</button>
+										<button type="button" class="btn btn-primary" onclick="window.location.href='data-input.php'"><i class="bi bi-plus-lg"></i> Tambah kategori</button>
 									</div>
 								</div>
 							</div>

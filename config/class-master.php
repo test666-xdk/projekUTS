@@ -12,9 +12,10 @@ class MasterData extends Database {
         $kategori = [];
         if ($result->num_rows > 0) {
             while($row = $result->fetch_assoc()) {
-                $prodi[] = [
-                    'id' => $row['id_kategori'],
-                    'nama kategori' => $row['nama_kategori']
+                $kategori[] = [
+                    'id' => 1,
+                    'nama kategori' => 'Lemari',
+                    'deskripsi' => 'kayu jati',
                 ];
             }
         }
@@ -22,15 +23,18 @@ class MasterData extends Database {
     }
 
     // Method untuk mendapatkan daftar provinsi
-    public function getProvinsi(){
-        $query = "SELECT * FROM tb_kategori";
+    public function getProduk(){
+        $query = "SELECT * FROM tb_Produk";
         $result = $this->conn->query($query);
-        $provinsi = [];
+        $produk = [];
         if ($result->num_rows > 0) {
             while($row = $result->fetch_assoc()) {
-                $provinsi[] = [
-                    'nama' => $row['nama_kategori'],
-                    'harga produk' => $row['harga_jual']
+                $produk[] = [
+                    'nama produk' => 'Lemari buku',
+                    'nama kategori' => 'meja',
+                    'harga' => 100000,
+                    'material' => 'terbuat dari kayu jati',
+                    'dimensi' => 120,
                 ];
             }
         }
@@ -48,10 +52,11 @@ class MasterData extends Database {
     }
 
     // Method untuk input data program studi
-    public function inputProdi($data){
+    public function inputKategori($data){
         $kodekategori = $data['kode'];
         $namakategori = $data['nama'];
-        $query = "INSERT INTO tb_ (kode_prodi, nama_prodi) VALUES (?, ?)";
+        $deskripsi = $data['deskripsi'];
+        $query = "INSERT INTO tb_ (kode_kategori, nama_kategori) VALUES (?, ?)";
         $stmt = $this->conn->prepare($query);
         if(!$stmt){
             return false;
@@ -63,7 +68,7 @@ class MasterData extends Database {
     }
 
     // Method untuk mendapatkan data program studi berdasarkan kode
-    public function getUpdateProdi($id){
+    public function getUpdatekategori($id){
         $query = "SELECT * FROM tb_prodi WHERE kode_prodi = ?";
         $stmt = $this->conn->prepare($query);
         if(!$stmt){
