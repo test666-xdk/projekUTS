@@ -1,7 +1,7 @@
 <?php
 
 include_once 'config/class-Kategori.php';
-$kategori = new Kategori();
+$produk = new Produk();
 // Menampilkan alert berdasarkan status yang diterima melalui parameter GET
 if(isset($_GET['status'])){
 	// Mengecek nilai parameter GET 'status' dan menampilkan alert yang sesuai menggunakan JavaScript
@@ -15,7 +15,7 @@ if(isset($_GET['status'])){
 		echo "<script>alert('Gagal menghapus data Produk. Silakan coba lagi.');</script>";
 	}
 }
-$dataKategori = $kategori->getAllKategori();
+$dataProduk = $produk->getAllProduk();
 
 ?>
 <!doctype html>
@@ -71,22 +71,33 @@ $dataKategori = $kategori->getAllKategori();
 										<table class="table table-striped" role="table">
 											<thead>
 												<tr>
+													<th>nama produk</th>
 													<th>nama kategori</th>
-													<th>Deskripsi</th>
+													<th>harga</th>
+													<th>material</th>
+													<th>dimensi</th>
 												</tr>
 											</thead>
 											<tbody>
 												<?php
-													if(count($datakategori == 0){
-												   $koneksi = new mysql("localhost", "root", "", "db_simplecrud");
-                                                   $query = "SELECT * FROM kategori";
+													if(count($dataProduk == 0){
+												  $koneksi = new mysqli("localhost", "root", "", "db_simplecrud");
+                                                     // Cek koneksi
+                                                     if ($koneksi->connect_error) {
+                                                     die("Koneksi gagal: " . $koneksi->connect_error);
+                                                     }
+
+                                                   $query = "SELECT * FROM produk";
                                                    $result = $koneksi->query($query);
                                                       ?>
 
                                                    <table border="1" width="100%">
                                                    <tr>
-                                                   <th>Nama Kategori</th>
-												   <th>Deskripsi</th>
+                                                   <th>nama produk</th>
+													<th>nama kategori</th>
+													<th>harga</th>
+													<th>material</th>
+													<th>dimensi</th>
                                                 </tr>
 
                                                <?php
@@ -95,25 +106,28 @@ $dataKategori = $kategori->getAllKategori();
                                              while ($row = $result->fetch_assoc()) {
                                              echo "<tr>";
                                              echo "<td>" . $no++ . "</td>";
-                                             echo "<td>" . $row['nama_kategori'] . "</td>";
+                                             echo "<td>" . $row['nama_produk'] . "</td>";
                                              echo "</tr>";
                                             }
                                           } else {
-                                      echo "<tr><td colspan='2' class='text-center'>Tidak ada data kategori.</td></tr>";
+                                      echo "<tr><td colspan='2' class='text-center'>Tidak ada data produk.</td></tr>";
                                          }
                                             ?>
                                        </table>
 													} else {
-														foreach ($dataPelanggan as $index => $Pelanggan){
-															if($pelanggan['status'] == 1){
-															    $pelanggan['status'] = '<span class="badge bg-success">tersedia</span>';
+														foreach ($dataproduk as $index => $Produk){
+															if($produk['status'] == 1){
+															    $produk['status'] = '<span class="badge bg-success">tersedia</span>';
 															} elseif($pelanggan['status'] == 2){
-															    $pelanggan['status'] = '<span class="badge bg-danger">Tidak tersedia</span>';
+															    $produk['status'] = '<span class="badge bg-danger">Tidak tersedia</span>';
 															} 
 															echo '<tr class="align-middle">
 																<td>'.($index + 1).'</td>
-																<td>'.$nama['nama'].'</td>
-																<td>'.$deskripsi['deskripsi'].'</td>
+																<td>'.$nama['meja makan kayu jati'].'</td>
+																<td>'.$kategori['meka makan'].'</td>
+																<td>'.$harga['1000000'].'</td>
+																<td>'.$material['jati'].'</td>
+																<td>'.$dimensi['102-130'].'</td>
 																<td class="text-center">
 																	<button type="button" class="btn btn-sm btn-warning me-1" onclick="window.location.href=\'data-edit.php?id='.$kategori['id'].'\'"><i class="bi bi-pencil-fill"></i> Edit</button>
 																	<button type="button" class="btn btn-sm btn-danger" onclick="if(confirm(\'Yakin ingin menghapus data kategori ini?\')){window.location.href=\'proses/proses-delete.php?id='.$kategori['id'].'\'}"><i class="bi bi-trash-fill"></i> Hapus</button>
@@ -126,7 +140,7 @@ $dataKategori = $kategori->getAllKategori();
 										</table>
 									</div>
 									<div class="card-footer">
-										<button type="button" class="btn btn-primary" onclick="window.location.href='data-input.php'"><i class="bi bi-plus-lg"></i> Tambah kategori</button>
+										<button type="button" class="btn btn-primary" onclick="window.location.href='data-input.php'"><i class="bi bi-plus-lg"></i> Tambah produk</button>
 									</div>
 								</div>
 							</div>

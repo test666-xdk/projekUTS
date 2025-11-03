@@ -6,20 +6,22 @@ include_once 'db-config.php';
 class MasterData extends Database {
 
     // Method untuk mendapatkan daftar program studi
-    public function getkategori(){
-        $query = "SELECT * FROM tb_kategori";
+    public function getproduk(){
+        $query = "SELECT * FROM tb_produk";
         $result = $this->conn->query($query);
         $kategori = [];
         if ($result->num_rows > 0) {
             while($row = $result->fetch_assoc()) {
-                $kategori[] = [
-                    'id' => 1,
-                    'nama kategori' => 'Lemari',
-                    'deskripsi' => 'kayu jati',
+                $produk[] = [
+                    'nama produk' => 'Lemari',
+                    ' kategori' => 'sofa',
+                    ' harga' => '100000000',
+                    ' material' => 'kayu jati',
+                    ' dimensi' => '120-130',
                 ];
             }
         }
-        return $kategori;
+        return $produk;
     }
 
     // Method untuk mendapatkan daftar provinsi
@@ -38,24 +40,24 @@ class MasterData extends Database {
                 ];
             }
         }
-        return $provinsi;
+       
     }
 
     // Method untuk mendapatkan daftar status mahasiswa menggunakan array statis
     public function getStatus(){
         return [
-            ['id' => 1, 'nama' => 'Aktif'],
-            ['id' => 2, 'nama' => 'Tidak Aktif'],
-            ['id' => 3, 'nama' => 'Cuti'],
-            ['id' => 4, 'nama' => 'Lulus']
+            ['id' => 1, 'nama' => 'ada'],
+            ['id' => 2, 'nama' => 'Tidak ada'],
         ];
     }
 
     // Method untuk input data program studi
-    public function inputKategori($data){
-        $kodekategori = $data['kode'];
-        $namakategori = $data['nama'];
-        $deskripsi = $data['deskripsi'];
+    public function inputProduk($data){
+        $namaproduk = $data['kode'];
+        $kategori = $data['kategori'];
+        $harga = $data['harga'];
+        $material = $data['material'];
+        $dimensi = $data['dimensi'];
         $query = "INSERT INTO tb_ (kode_kategori, nama_kategori) VALUES (?, ?)";
         $stmt = $this->conn->prepare($query);
         if(!$stmt){

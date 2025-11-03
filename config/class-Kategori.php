@@ -1,153 +1,114 @@
 <?php 
-
-// Memasukkan file konfigurasi database
 include_once 'db-config.php';
 
 class Kategori extends Database {
 
-    // Method untuk input data mahasiswa
-    public function inputMahasiswa($data){
-        // Mengambil data dari parameter $data
-        $prodi     = $data['id'];
-        $nama     = $data['nama kategori'];
-        $deskripsi    = $data['deskripsi'];
-        // Menyiapkan query SQL untuk insert data menggunakan prepared statement
-        $query = "INSERT INTO tb_mahasiswa (id_kategori, nama_kategori deskripsi) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    public function inputKategori($data){
+        $id         = $data['id_kategori'];
+        $kategori   = $data['kategori'];
+        $deskripsi  = $data['deskripsi'];
+        $no_telepon = $data['no_telepon'];
+
+        $query = "INSERT INTO tb_kategori (id_kategori, nama_kategori, deskripsi, no_telepon) VALUES (?, ?, ?, ?)";
         $stmt = $this->conn->prepare($query);
-        // Mengecek apakah statement berhasil disiapkan
-        if(!$stmt){
-            return false;
-        }
-        // Memasukkan parameter ke statement
-        $stmt->bind_param("ssssssss", $id, $nama, $produk, );
+        if(!$stmt) return false;
+
+        $stmt->bind_param("ssss", $id, $kategori, $deskripsi, $no_telepon);
         $result = $stmt->execute();
         $stmt->close();
-        // Mengembalikan hasil eksekusi query
         return $result;
     }
 
-    // Method untuk mengambil semua data mahasiswa
     public function getAllKategori(){
-        // Menyiapkan query SQL untuk mengambil data mahasiswa beserta prodi dan provinsi
-        $query = "SELECT id_kategori nama_kategori deskripsi
-                  FROM tb_kategori
-                  JOIN tb_produk ON produk_kategori = kode_produk
+        $query = "SELECT id_kategori, nama_kategori, deskripsi, no_telepon FROM tb_kategori";
         $result = $this->conn->query($query);
-        // Menyiapkan array kosong untuk menyimpan data Kategori
         $kategori = [];
-        // Mengecek apakah ada data yang ditemukan
-        if($result->num_rows > 0){
-            // Mengambil setiap baris data dan memasukkannya ke dalam array
+
+        if($result && $result->num_rows > 0){
             while($row = $result->fetch_assoc()) {
                 $kategori[] = [
-                    'id' => $row['id_kategori'],
-                    'nama' => $row['nama_kategori'],
-                    'deskripsi' => $row['deskripsi'],
+                    'id'         => $row['id_kategori'],
+                    'nama'       => $row['nama_kategori'],
+                    'deskripsi'  => $row['deskripsi'],
+                    'no_telepon' => $row['no_telepon'],
                 ];
             }
         }
-        // Mengembalikan array data kategori
         return $kategori;
     }
 
-    // Method untuk mengambil data mahasiswa berdasarkan ID
-    public function getUpdateMahasiswa($id){
-        // Menyiapkan query SQL untuk mengambil data mahasiswa berdasarkan ID menggunakan prepared statement
-        $query = "SELECT * FROM tb_kategori WHERE id_kategori= ?";
+    public function getKategoriById($id){
+        $query = "SELECT * FROM tb_kategori WHERE id_kategori = ?";
         $stmt = $this->conn->prepare($query);
-        if(!$stmt){
-            return false;
-        }
-        $stmt->bind_param("i", $id);
+        if(!$stmt) return false;
+
+        $stmt->bind_param("s", $id);
         $stmt->execute();
         $result = $stmt->get_result();
         $data = false;
+
         if($result->num_rows > 0){
-            // Mengambil data Kategori 
             $row = $result->fetch_assoc();
-            // Menyimpan data dalam array
             $data = [
-                'id' => $row['id_kategori'],
-                'nama' => $row['nama_kategori'],
-                'deskripsi' => $row['deskripsi'],
+                'id'         => $row['id_kategori'],
+                'kategori'   => $row['nama_kategori'],
+                'deskripsi'  => $row['deskripsi'],
+                'no_telepon' => $row['no_telepon'],
             ];
         }
         $stmt->close();
-        // Mengembalikan data kategori
         return $data;
     }
 
-    // Method untuk mengedit data mahasiswa
-    public function editMahasiswa($data){
-        // Mengambil data dari parameter $data
-        $id       = $data['id'];
-        $nim      = $data['nama'];
-        $deskripsi     = $data['deskripsi'];
-        // Menyiapkan query SQL untuk update data menggunakan prepared statement
-        $query = "UPDATE tb_kategori SET id_kategori = ?, nama_kategori = ?, deskrpsi  = ?";
+    public function editKategori($data){
+        $id         = $data['id_kategori'];
+        $kategori   = $data['kategori'];
+        $deskripsi  = $data['deskripsi'];
+        $no_telepon = $data['no_telepon'];
+
+        $query = "UPDATE tb_kategori SET nama_kategori = ?, deskripsi = ?, no_telepon = ? WHERE id_kategori = ?";
         $stmt = $this->conn->prepare($query);
-        if(!$stmt){
-            return false;
-        }
-        // Memasukkan parameter ke statement
-        $stmt->bind_param("ssssssssi", $id, $nama, $deskripsi,);
+        if(!$stmt) return false;
+
+        $stmt->bind_param("ssss", $kategori, $deskripsi, $no_telepon, $id);
         $result = $stmt->execute();
         $stmt->close();
-        // Mengembalikan hasil eksekusi query
         return $result;
     }
 
-    // Method untuk menghapus data Kategori
-    public function deleteMahasiswa($id){
-        // Menyiapkan query SQL untuk delete data menggunakan prepared statement
+    public function deleteKategori($id){
         $query = "DELETE FROM tb_kategori WHERE id_kategori = ?";
         $stmt = $this->conn->prepare($query);
-        if(!$stmt){
-            return false;
-        }
-        $stmt->bind_param("i", $id);
+        if(!$stmt) return false;
+
+        $stmt->bind_param("s", $id);
         $result = $stmt->execute();
         $stmt->close();
-        // Mengembalikan hasil eksekusi query
         return $result;
     }
 
-    // Method untuk mencari data mahasiswa berdasarkan kata kunci
-    public function searchMahasiswa($kataKunci){
-        // Menyiapkan LIKE query untuk pencarian
+    public function searchKategori($kataKunci){
         $likeQuery = "%".$kataKunci."%";
-        // Menyiapkan query SQL untuk pencarian data mahasiswa menggunakan prepared statement
-        $query = "SELECT id_kategori, nama_kategori
-                  FROM tb_Kategori
-                  JOIN tb_produk ON produk_kategori = kode_produk
+        $query = "SELECT id_kategori, nama_kategori, deskripsi, no_telepon FROM tb_kategori 
                   WHERE id_kategori LIKE ? OR nama_kategori LIKE ?";
         $stmt = $this->conn->prepare($query);
-        if(!$stmt){
-            // Mengembalikan array kosong jika statement gagal disiapkan
-            return [];
-        }
-        // Memasukkan parameter ke statement
+        if(!$stmt) return [];
+
         $stmt->bind_param("ss", $likeQuery, $likeQuery);
         $stmt->execute();
         $result = $stmt->get_result();
-        // Menyiapkan array kosong untuk menyimpan data kategori
-        $kategori= [];
-        if($result->num_rows > 0){
-            // Mengambil setiap baris data dan memasukkannya ke dalam array
-            while($row = $result->fetch_assoc()) {
-                // Menyimpan data kategori dalam array
-                $kategori[] = [
-                    'id' => $row['id_kategori'],
-                    'nama' => $row['nama_kategori'],
-                    'deskripsi' => $row['deskrpsi'],
-                ];
-            }
-        }
-        $stmt->close();
-        // Mengembalikan array data kategori yang ditemukan
-        return $kategori;
-    }
+        $kategori = [];
 
+        if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $kategori[] = [
+            'id'         => $row['id_kategori'],
+            'nama'       => $row['nama_kategori'],
+            'deskripsi'  => $row['deskripsi'],
+            'no_telepon' => $row['no_telepon'],
+        ];
+    }
 }
 
-?>
+}
+}
