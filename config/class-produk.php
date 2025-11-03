@@ -1,188 +1,147 @@
 <?php
-
-// Memasukkan file konfigurasi database
+// Menghubungkan ke file konfigurasi database
 include_once 'db-config.php';
 
-class MasterData extends Database {
+class Kategori extends Database {
 
-    // Method untuk mendapatkan daftar program studi
-    public function getproduk(){
-        $query = "SELECT * FROM tb_produk";
-        $result = $this->conn->query($query);
-        $kategori = [];
-        if ($result->num_rows > 0) {
-            while($row = $result->fetch_assoc()) {
-                $produk[] = [
-                    'nama produk' => 'Lemari',
-                    ' kategori' => 'sofa',
-                    ' harga' => '100000000',
-                    ' material' => 'kayu jati',
-                    ' dimensi' => '120-130',
-                ];
-            }
-        }
-        return $produk;
-    }
-
-    // Method untuk mendapatkan daftar provinsi
-    public function getProduk(){
-        $query = "SELECT * FROM tb_Produk";
-        $result = $this->conn->query($query);
-        $produk = [];
-        if ($result->num_rows > 0) {
-            while($row = $result->fetch_assoc()) {
-                $produk[] = [
-                    'nama produk' => 'Lemari buku',
-                    'nama kategori' => 'meja',
-                    'harga' => 100000,
-                    'material' => 'terbuat dari kayu jati',
-                    'dimensi' => 120,
-                ];
-            }
-        }
-       
-    }
-
-    // Method untuk mendapatkan daftar status mahasiswa menggunakan array statis
-    public function getStatus(){
-        return [
-            ['id' => 1, 'nama' => 'ada'],
-            ['id' => 2, 'nama' => 'Tidak ada'],
-        ];
-    }
-
-    // Method untuk input data program studi
-    public function inputProduk($data){
-        $namaproduk = $data['kode'];
-        $kategori = $data['kategori'];
+    // ===== 1️⃣ INPUT Produk BARU =====
+    public function inputMenu($data){
+        // Mengambil data dari form (array $data)
+        $namaproduk     = $data['nama'];
+        $kategori  = $data['kategori'];
+        $deskripsi    = $data['deskripsi'];
         $harga = $data['harga'];
+        $no_telp  = $data['no_telp'];
         $material = $data['material'];
-        $dimensi = $data['dimensi'];
-        $query = "INSERT INTO tb_ (kode_kategori, nama_kategori) VALUES (?, ?)";
+
+        // ⚠️ Gunakan query INSERT untuk menambah data
+        $query = "INSERT INTO tb_kategori (nama_produk, kategori, deskripsi, harga, no_telp, material ) VALUES (?, ?, ?, ?, ?, ?)";
         $stmt = $this->conn->prepare($query);
+
+        // Cek apakah statement berhasil dibuat
         if(!$stmt){
             return false;
         }
-        $stmt->bind_param("ss", $kodeProdi, $namaProdi);
+
+        // Mengikat parameter ke query
+        $stmt->bind_param("ssiss", $nama, $kategori, $deskripsi, $harga, $no_telp $material);
+
+        // Eksekusi dan simpan hasilnya
         $result = $stmt->execute();
         $stmt->close();
+
         return $result;
     }
 
-    // Method untuk mendapatkan data program studi berdasarkan kode
-    public function getUpdatekategori($id){
-        $query = "SELECT * FROM tb_prodi WHERE kode_prodi = ?";
-        $stmt = $this->conn->prepare($query);
-        if(!$stmt){
-            return false;
+    // ===== 2️⃣ MENGAMBIL SEMUA DATA MENU =====
+    public function getAllMenu(){
+        $query = "SELECT id_kategori, nama_kategori, deskripsi, harga, no_telp, material FROM tb_kategori";
+        $result = $this->conn->query($query);
+        $menu = [];
+
+        if($result && $result->num_rows > 0){
+            while($row = $result->fetch_assoc()) {
+                $menu[] = $row;
+            }
         }
-        $stmt->bind_param("s", $id);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $prodi = null;
-        if($result->num_rows > 0){
-            $row = $result->fetch_assoc();
-            $prodi = [
-                'id' => $row['kode_prodi'],
-                'nama' => $row['nama_prodi']
-            ];
-        }
-        $stmt->close();
-        return $prodi;
+        return $menu;
     }
 
-    // Method untuk mengedit data program studi
-    public function updateKategori($data){
-        $idKategori = $data['kode'];
-        $namaKategori = $data['nama'];
-        $query = "UPDATE tb_kategori SET nama_produk = ? WHERE id_produk = ?";
+    // ===== 3️⃣ MENGAMBIL MENU BERDASARKAN ID (getUpdateMenu - lama) =====
+    public function getUpdateMenu($id){
+        $query = "SELECT * FROM tb_kategori WHERE id_kategori = ?";
         $stmt = $this->conn->prepare($query);
         if(!$stmt){
             return false;
         }
-        $stmt->bind_param("ss", $namaProduk, $kodeProduk);
-        $result = $stmt->execute();
-        $stmt->close();
-        return $result;
-    }
 
-    // Method untuk menghapus data program studi
-    public function deleteProdi($id){
-        $query = "DELETE FROM tb_prodi WHERE kode_prodi = ?";
-        $stmt = $this->conn->prepare($query);
-        if(!$stmt){
-            return false;
-        }
-        $stmt->bind_param("s", $id);
-        $result = $stmt->execute();
-        $stmt->close();
-        return $result;
-    }
-
-    // Method untuk input data provinsi
-    public function inputProvinsi($data){
-        $namaProvinsi = $data['nama'];
-        $query = "INSERT INTO tb_provinsi (nama_provinsi) VALUES (?)";
-        $stmt = $this->conn->prepare($query);
-        if(!$stmt){
-            return false;
-        }
-        $stmt->bind_param("s", $namaProvinsi);
-        $result = $stmt->execute();
-        $stmt->close();
-        return $result;
-    }
-
-    // Method untuk mendapatkan data provinsi berdasarkan id
-    public function getUpdateProvinsi($id){
-        $query = "SELECT * FROM tb_provinsi WHERE id_provinsi = ?";
-        $stmt = $this->conn->prepare($query);
-        if(!$stmt){
-            return false;
-        }
         $stmt->bind_param("i", $id);
         $stmt->execute();
         $result = $stmt->get_result();
-        $provinsi = null;
-        if($result->num_rows > 0){
-            $row = $result->fetch_assoc();
-            $provinsi = [
-                'id' => $row['id_provinsi'],
-                'nama' => $row['nama_provinsi']
-            ];
-        }
+        $data = $result->fetch_assoc();
         $stmt->close();
-        return $provinsi;
+
+        return $data;
     }
 
-    // Method untuk mengedit data provinsi
-    public function updateProvinsi($data){
-        $idProvinsi = $data['id'];
-        $namaProvinsi = $data['nama'];
-        $query = "UPDATE tb_provinsi SET nama_provinsi = ? WHERE id_provinsi = ?";
+    // ✅ ===== 3b️⃣ TAMBAHAN BARU: getMenuById() =====
+    // (fungsi ini yang dipakai oleh data-edit.php)
+    public function getMenuById($id){
+        $query = "SELECT * FROM tb_kategori WHERE id_kategori = ?";
         $stmt = $this->conn->prepare($query);
         if(!$stmt){
             return false;
         }
-        $stmt->bind_param("si", $namaProvinsi, $idProvinsi);
+
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $data = $result->fetch_assoc();
+        $stmt->close();
+
+        return $data;
+    }
+
+    // ===== 4️⃣ MENGEDIT MENU =====
+    public function editMenu($data){
+        $namaproduk     = $data['nama'];
+        $kategori  = $data['kategori'];
+        $deskripsi    = $data['deskripsi'];
+        $harga = $data['harga'];
+        $no_telp  = $data['no_telp'];
+        $material = $data['material'];
+
+        $query = "UPDATE tb_kategori SET nama_kategori = ?, kategori = ?, deskripsi = ?, harga  = ?, status = ? WHERE id_kategori = ?";
+        $stmt = $this->conn->prepare($query);
+        if(!$stmt){
+            return false;
+        }
+
+        $stmt->bind_param("ssissi", $nama, $kategori, $harga, $deskripsi, $material, $id);
         $result = $stmt->execute();
         $stmt->close();
+
         return $result;
     }
 
-    // Method untuk menghapus data provinsi
-    public function deleteProvinsi($id){
-        $query = "DELETE FROM tb_provinsi WHERE id_provinsi = ?";
+    // ===== 5️⃣ MENGHAPUS MENU =====
+    public function deleteMenu($id){
+        $query = "DELETE FROM tb_kategori WHERE id_menu = ?";
         $stmt = $this->conn->prepare($query);
         if(!$stmt){
             return false;
         }
+
         $stmt->bind_param("i", $id);
         $result = $stmt->execute();
         $stmt->close();
+
         return $result;
     }
 
+    // ===== 6️⃣ MENCARI MENU BERDASARKAN NAMA ATAU KATEGORI =====
+    public function searchMenu($kataKunci){
+        $likeQuery = "%".$kataKunci."%";
+        $query = "SELECT id_kategori, nama_kategori,harga, deskripsi, material
+                  FROM tb_kategori
+                  WHERE nama_kategori LIKE ? OR kategori LIKE ?";
+        $stmt = $this->conn->prepare($query);
+
+        if(!$stmt){
+            return [];
+        }
+
+        $stmt->bind_param("ss", $likeQuery, $likeQuery);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $menu = [];
+
+        while($row = $result->fetch_assoc()){
+            $menu[] = $row;
+        }
+
+        $stmt->close();
+        return $menu;
+    }
 }
-
 ?>

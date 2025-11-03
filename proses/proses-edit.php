@@ -9,12 +9,7 @@ $dataMahasiswa = [
     'id' => $_POST['id'],
     'nim' => $_POST['nim'],
     'nama' => $_POST['nama'],
-    'prodi' => $_POST['prodi'],
-    'alamat' => $_POST['alamat'],
-    'provinsi' => $_POST['provinsi'],
-    'email' => $_POST['email'],
     'telp' => $_POST['telp'],
-    'status' => $_POST['status']
 ];
 // Memanggil method editMahasiswa untuk mengupdate data mahasiswa dengan parameter array $dataMahasiswa
 $edit = $mahasiswa->editMahasiswa($dataMahasiswa);

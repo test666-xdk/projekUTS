@@ -1,9 +1,9 @@
 <?php
 
 // Memasukkan file class-master.php untuk mengakses class MasterData
-include '../config/class-master.php';
+include '../config/class-kategori.php';
 // Membuat objek dari class MasterData
-$master = new MasterData();
+$kategori = new Kategori();
 // Mengecek aksi yang dilakukan berdasarkan parameter GET 'aksi'
 if($_GET['aksi'] == 'inputprodi'){
     // Mengambil data prodi dari form input menggunakan metode POST dan menyimpannya dalam array
@@ -24,8 +24,8 @@ if($_GET['aksi'] == 'inputprodi'){
     // Mengambil data prodi dari form edit menggunakan metode POST dan menyimpannya dalam array
     $dataProdi = [
         'id' => $_POST['id'],
-        'kode' => $_POST['kode'],
         'nama' => $_POST['nama']
+          'nama' => $_POST['nama']
     ];
     // Memanggil method updateProdi untuk mengupdate data prodi dengan parameter array $dataProdi
     $update = $master->updateProdi($dataProdi);

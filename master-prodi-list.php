@@ -2,19 +2,19 @@
 
 // Silakan lihat komentar di file data-list.php untuk penjelasan kode ini, karena struktur dan logikanya serupa.
 include_once 'config/class-master.php';
-$master = new MasterData();
+$kategori = new MasterData();
 if(isset($_GET['status'])){
 	if($_GET['status'] == 'inputsuccess'){
-		echo "<script>alert('Data prodi berhasil ditambahkan.');</script>";
+		echo "<script>alert('Data kategori berhasil ditambahkan.');</script>";
 	} else if($_GET['status'] == 'editsuccess'){
-		echo "<script>alert('Data prodi berhasil diubah.');</script>";
+		echo "<script>alert('Data kategori berhasil diubah.');</script>";
 	} else if($_GET['status'] == 'deletesuccess'){
-		echo "<script>alert('Data prodi berhasil dihapus.');</script>";
+		echo "<script>alert('Data kategori berhasil dihapus.');</script>";
 	} else if($_GET['status'] == 'deletefailed'){
-		echo "<script>alert('Gagal menghapus data prodi. Silakan coba lagi.');</script>";
+		echo "<script>alert('Gagal menghapus data kategori. Silakan coba lagi.');</script>";
 	}
 }
-$dataProdi = $master->getProdi();
+$dataKategori= $kategori->getKategori();
 
 ?>
 <!doctype html>
@@ -37,7 +37,7 @@ $dataProdi = $master->getProdi();
 					<div class="container-fluid">
 						<div class="row">
 							<div class="col-sm-6">
-								<h3 class="mb-0">Data Program Studi</h3>
+								<h3 class="mb-0">Data Produk</h3>
 							</div>
 							<div class="col-sm-6">
 								<ol class="breadcrumb float-sm-end">
@@ -55,7 +55,7 @@ $dataProdi = $master->getProdi();
 							<div class="col-12">
 								<div class="card">
 									<div class="card-header">
-										<h3 class="card-title">Daftar Program Studi</h3>
+										<h3 class="card-title">Daftar produk</h3>
 										<div class="card-tools">
 											<button type="button" class="btn btn-tool" data-lte-toggle="card-collapse" title="Collapse">
 												<i data-lte-icon="expand" class="bi bi-plus-lg"></i>
@@ -70,24 +70,30 @@ $dataProdi = $master->getProdi();
 										<table class="table table-striped" role="table">
 											<thead>
 												<tr>
-													<th>No</th>
-													<th>Kode</th>
-													<th>Nama</th>
+													<th>id</th>
+													<th>nama kategori</th>
+													<th>deskripsi</th>
+													<th>harga</th>
+													<th>no_telp</th>
+													<th>material</th>
 													<th class="text-center">Aksi</th>
 												</tr>
 											</thead>
 											<tbody>
 												<?php
-													if(count($dataProdi) == 0){
+													if(count($dataKategori) == 0){
 													    echo '<tr class="align-middle">
 															<td colspan="4" class="text-center">Tidak ada data prodi.</td>
 														</tr>';
 													} else {
-														foreach ($dataProdi as $index => $prodi){
+														foreach ($dataKategorii as $index => $kategori){
 															echo '<tr class="align-middle">
-																<td>'.($index + 1).'</td>
-																<td>'.$prodi['id'].'</td>
-																<td>'.$prodi['nama'].'</td>
+																<td>'.$kategori['id_kategori'].'</td>
+                                                                <td>'.$kategori['nama_kategori'].'</td>
+                                                                <td>'.$kategori['deskripsi'].'</td>
+                                                                <td>'.$kategori['harga'].'</td>
+                                                                <td>'.$kategori['no_telp'].'</td>
+                                                                <td>'.$kategori['material'].'</td>
 																<td class="text-center">
 																	<button type="button" class="btn btn-sm btn-warning me-1" onclick="window.location.href=\'master-prodi-edit.php?id='.$prodi['id'].'\'"><i class="bi bi-pencil-fill"></i> Edit</button>
 																	<button type="button" class="btn btn-sm btn-danger" onclick="if(confirm(\'Yakin ingin menghapus data program studi ini?\')){window.location.href=\'proses/proses-prodi.php?aksi=deleteprodi&id='.$prodi['id'].'\'}"><i class="bi bi-trash-fill"></i> Hapus</button>
@@ -100,7 +106,7 @@ $dataProdi = $master->getProdi();
 										</table>
 									</div>
 									<div class="card-footer">
-										<button type="button" class="btn btn-primary" onclick="window.location.href='master-prodi-input.php'"><i class="bi bi-plus-lg"></i> Tambah Prodi</button>
+										<button type="button" class="btn btn-primary" onclick="window.location.href='master-prodi-input.php'"><i class="bi bi-plus-lg"></i> Tambah kategori</button>
 									</div>
 								</div>
 							</div>

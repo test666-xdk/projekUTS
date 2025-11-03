@@ -1,17 +1,19 @@
 <?php 
 
-include_once 'config/class-master.php';
-include_once 'config/class-mahasiswa.php';
-$master = new MasterData();
+include_once 'config/class-kategori.php';
+include_once 'config/class-Kategori.php';
+$kategori = new MasterData();
 $kategori = new Kategori();
 // Mengambil daftar program studi, provinsi, dan status mahasiswa
-$idkategoriList = $master->getKategori();
-// Mengambil daftar provinsi
-$namakategoriList = $master->getKategori();
+$id_kategoriList = $master->getKategori();
+// Mengambil daftar nama kategori
+$nama_kategoriList = $master->getKategori();
 // Mengambil daftar status mahasiswa
 $deskripsisList = $master->getDeskripsi();
+// Mengambil daftar status mahasiswa
+$no_telpList = $master->getKategori();
 // Mengambil data mahasiswa yang akan diedit berdasarkan id dari parameter GET
-$dataMahasiswa = $mahasiswa->getUpdateMahasiswa($_GET['id']);
+$dataKategori = $kateori->getUpdateKategori($_GET['id']);
 if(isset($_GET['status'])){
     if($_GET['status'] == 'failed'){
         echo "<script>alert('Gagal mengubah data kategori. Silakan coba lagi.');</script>";
@@ -99,23 +101,9 @@ if(isset($_GET['status'])){
                                                 </select>
                                             </div>
                                             <div class="mb-3">
-                                                <label for="no telepon" class="form-label">no telepon</label>
-                                                <textarea class="form-control" id="alamat" name="no" rows="3" placeholder="Masukkan no telepon" required><?php echo $dataMahasiswa['no']; ?></textarea>
+                                                <label for="no_telepon" class="form-label">no telepon</label>
+                                                <textarea class="form-control" id="no_telp" no="no_telp" rows="3" placeholder="Masukkan no telepon" required><?php echo $dataKategori['no']; ?></textarea>
                                             </div>
-                                                    <?php
-                                                    // Iterasi daftar provinsi dan menandai yang sesuai dengan data mahasiswa yang dipilih
-                                                    foreach ($provinsiList as $provinsi){
-                                                        // Menginisialisasi variabel kosong untuk menandai opsi yang dipilih
-                                                        $selectedProvinsi = "";
-                                                        // Mengecek apakah provinsi saat ini sesuai dengan data mahasiswa
-                                                        if($dataMahasiswa['provinsi'] == $provinsi['id']){
-                                                            // Jika sesuai, tandai sebagai opsi yang dipilih
-                                                            $selectedProvinsi = "selected";
-                                                        }
-                                                        // Menampilkan opsi provinsi dengan penanda yang sesuai
-                                                        echo '<option value="'.$provinsi['id'].'" '.$selectedProvinsi.'>'.$provinsi['nama'].'</option>';
-                                                    }
-                                                    ?>
                                                 </select>
                                                     <?php 
                                                     // Iterasi daftar status mahasiswa dan menandai yang sesuai dengan data mahasiswa yang dipilih
